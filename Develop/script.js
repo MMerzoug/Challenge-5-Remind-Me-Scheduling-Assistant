@@ -1,7 +1,14 @@
 // Executes code once the DOM is fully loaded
-$(document).ready(function() { 
+$(document).ready(function() {
   var today = dayjs();
-  $("#currentDay").text(today.format('MMMM D, YYYY')); // display the date
+  var lastSavedDate = localStorage.getItem('lastSavedDate');
+
+  // Compare the current date with the last saved date
+  if (lastSavedDate && today.isAfter(dayjs(lastSavedDate), 'day')) {
+    localStorage.clear(); // Clear local storage if the dates are different
+  }
+
+  $("#currentDay").text(today.format('dddd, MMMM D, YYYY')); // display the date
 
   var currentHour = dayjs().format('H'); // Get the current hour in 24-hour format using Day.js
 
@@ -20,21 +27,22 @@ $(document).ready(function() {
   });
 
   // Load saved data
-  $(".time-block form").each(function() {
+  $(".time-block").each(function() {
     var formId = $(this).attr('id'); // Get the id of the form where I want to load saved data
     var savedEvent = localStorage.getItem(formId); // Get the saved event from localStorage
 
     if (savedEvent) {
-      $(this).find('textarea.description').val(savedEvent); // Load the saved event
+      // use the formId to select the corresponding textarea and load the saved event
+      $("#description-" + formId).val(savedEvent);
     }
   });
 
   // Save data
-  $(".time-block form").on('submit', function(event) {
+  $(".time-block").on('submit', function(event) {
     event.preventDefault();
 
     var formId = $(this).attr('id'); // Get the id of the form
-    var displayEvent = $(this).find('textarea.description').val();
+    var displayEvent = $("#description-" + formId).val();
 
     if (!displayEvent) {
       console.log('No event to be saved');
@@ -42,7 +50,7 @@ $(document).ready(function() {
     }
 
     localStorage.setItem(formId, displayEvent); // Store the event
-    $(this).find('textarea.description').val(''); // Clear the textarea
+    localStorage.setItem('lastSavedDate', today.format('YYYY-MM-DD')); // Store the current date as the last saved date
 
     alert('Event saved!'); // Inform the user that the event was saved
   });
