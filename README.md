@@ -31,6 +31,11 @@ This is a simple web application that allows you to create and manage your daily
 7. You can refresh the page, and the saved events will still be there. 
 8. Events clear daily.
 
+## Screenshots
+
+![Screenshot 1](/assets/workdayScheduler.jpg)
+
+
 ## Technologies
 
 The Workday Scheduler is built using the following technologies:
