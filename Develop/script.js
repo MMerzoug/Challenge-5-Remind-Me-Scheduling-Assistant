@@ -1,5 +1,5 @@
 // Executes code once the DOM is fully loaded
-$(document).ready(function() {
+$(document).ready(function () {
   var today = dayjs();
   var lastSavedDate = localStorage.getItem('lastSavedDate');
 
@@ -13,7 +13,7 @@ $(document).ready(function() {
   var currentHour = dayjs().format('H'); // Get the current hour in 24-hour format using Day.js
 
   // .each() function is used to iterate over each time block with the class .time-block.
-  $(".time-block").each(function() {
+  $(".time-block").each(function () {
     var blockHour = parseInt($(this).attr('id').split('-')[1]); // Extract the hour from the id attribute
 
     // Compare the block hour with the current hour and add/remove the appropriate classes
@@ -27,7 +27,7 @@ $(document).ready(function() {
   });
 
   // Load saved data
-  $(".time-block").each(function() {
+  $(".time-block").each(function () {
     var formId = $(this).attr('id'); // Get the id of the form where I want to load saved data
     var savedEvent = localStorage.getItem(formId); // Get the saved event from localStorage
 
@@ -38,12 +38,12 @@ $(document).ready(function() {
   });
 
   // Save data
-  $(".time-block").on('submit', function(event) {
+  $(".time-block").on('submit', function (event) {
     event.preventDefault();
 
     var formId = $(this).attr('id'); // Get the id of the form
-    var displayEvent = $("#description-" + formId).val();
-
+    var displayEvent = $("#description-" + formId).val().trim();
+    console.log("'" + displayEvent + "'");
     if (!displayEvent) {
       console.log('No event to be saved');
       return;
